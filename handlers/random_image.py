@@ -3,8 +3,7 @@ from aiogram.types import Message, CallbackQuery, URLInputFile
 
 from keyboard.resend_kb import photo_kb
 from keyboard.set_tags import form_set_tags_kb
-
-from service.DanbooruAPI.random_img import random_img
+from service.DanbooruAPI.random_img import random_img, search_tag, fuzzy_similar_tag
 
 router = Router()
 
@@ -24,7 +23,7 @@ async def ten_neko(message: Message):
         await message.answer_photo(photo=image, caption=text, reply_markup=photo_kb)
 
 
-@router.message(F.text.lower().startswith('set tags'))
+@router.message(F.text.lower().startswith('set'))
 async def set_tags(message: Message):
     await message.answer(text=message.text[4:],
                          reply_markup=form_set_tags_kb(message.text[4:]))
@@ -51,6 +50,19 @@ async def tags(message: Message):
             await message.answer_photo(photo=image, caption=text, reply_markup=photo_kb)
         except Exception as e:
             await message.answer(f'some error: {e}')
+
+
+@router.message(F.text.lower().startswith('search'))
+async def find_tag(message: Message):
+    msg = message.text.split()
+    tag = message.text[7:]
+    if msg[0] == 'search':
+        text = search_tag(tag)
+    else:
+        text = fuzzy_similar_tag(tag)
+    if not text:
+        text = 'Probably nothing...'
+    await message.answer(text=text)
 
 
 @router.callback_query(F.data == 'approve')
