@@ -3,3 +3,5 @@ requests~=2.31.0
 aiogram~=3.1.0
 environs==10.3.0
 
+
+rule34Py~=1.4.11

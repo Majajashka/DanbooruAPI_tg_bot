@@ -4,7 +4,7 @@ import logging
 from aiogram import Dispatcher, Bot
 
 from config import config
-from handlers import basic, random_image
+from handlers import basic, random_image, rule34
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s - [%(levelname)s] - %(name)s - "
@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO,
 async def main():
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
     dp = Dispatcher()
-    dp.include_routers(basic.router, random_image.router)
+    dp.include_routers(basic.router, random_image.router, rule34.router)
     await dp.start_polling(bot)
 
 

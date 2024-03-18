@@ -28,7 +28,7 @@ def random_img(tags: str = '') -> tuple:
 
 def search_tag(tag: str):
     param = {
-        'search[name_matches]': f'{tag}*',
+        'search[name_or_alias_matches]': f'{tag}*',
         'search[hide_empty]': True,
         'search[order]': 'count'
     }
@@ -43,9 +43,9 @@ def search_tag(tag: str):
     return text
 
 
-def fuzzy_similar_tag(tag: str):
+def regex_similar_tag(tag: str):
     param = {
-        'search[fuzzy_name_matches]': f'{tag}*',
+        'search[name_regex]': f'.*{tag}.*',
         'search[hide_empty]': True,
         'search[order]': 'count'
     }

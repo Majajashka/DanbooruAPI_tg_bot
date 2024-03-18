@@ -3,7 +3,7 @@ from aiogram.types import Message, CallbackQuery, URLInputFile
 
 from keyboard.resend_kb import photo_kb
 from keyboard.set_tags import form_set_tags_kb
-from service.DanbooruAPI.random_img import random_img, search_tag, fuzzy_similar_tag
+from service.DanbooruAPI.random_img import random_img, regex_similar_tag, search_tag
 
 router = Router()
 
@@ -39,6 +39,7 @@ async def tags(message: Message):
         for _ in range(int(msg[1])):
             try:
                 text, img_url = random_img(search_tags)
+                print(img_url)
                 image = URLInputFile(url=img_url)
                 await message.answer_photo(photo=image, caption=text, reply_markup=photo_kb)
             except Exception as e:
@@ -54,12 +55,17 @@ async def tags(message: Message):
 
 @router.message(F.text.lower().startswith('search'))
 async def find_tag(message: Message):
-    msg = message.text.split()
     tag = message.text[7:]
-    if msg[0] == 'search':
-        text = search_tag(tag)
-    else:
-        text = fuzzy_similar_tag(tag)
+    text = regex_similar_tag(tag)
+    if not text:
+        text = 'Probably nothing...'
+    await message.answer(text=text)
+
+
+@router.message(F.text.lower().startswith('searchf'))
+async def find_tag(message: Message):
+    tag = message.text[8:]
+    text = search_tag(tag)
     if not text:
         text = 'Probably nothing...'
     await message.answer(text=text)
