@@ -1,7 +1,8 @@
 from rule34Py import rule34Py
 
-text = ('Score: {score}\n'
-        'Image_url: {url}')
+text = ('<b>Tags</b>: {tags}\n'
+        '<b>Score</b>: {score}\n'
+        '<b>Image_url</b>: {url}')
 
 
 # def get_random_img(tags):
@@ -17,8 +18,14 @@ text = ('Score: {score}\n'
 #     return formatted_text, img_url
 
 
-def get_random_img(tags: list):
+def get_random_img(search_tags: list, tags_display: bool = False):
+    tags = None
+    negative_tags = ['-futa', '-futanari', '-furry', '-gay', '-yaoi', '-femboy', '-huge_breasts', '-big_belly',
+                     '-weight_gain', '-cannibalism', '-dead', '-death', '-murder', '-murdered', '-animal', '-male_only',
+                     ]
     rule34 = rule34Py()
-    search = rule34.random_post(tags)
-    formatted_text = text.format(url=search.image, score=search.score)
+    search = rule34.random_post(search_tags+negative_tags)
+    if tags_display:
+        tags = ', '.join(search.tags)
+    formatted_text = text.format(url=search.image, score=search.score, tags=tags)
     return formatted_text, search.image

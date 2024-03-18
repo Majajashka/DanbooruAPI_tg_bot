@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO,
 async def main():
     bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
     dp = Dispatcher()
-    dp.include_routers(basic.router, random_image.router, rule34.router)
+    dp.include_routers(random_image.router, rule34.router, basic.router)
     await dp.start_polling(bot)
 
 
