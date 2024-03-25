@@ -22,9 +22,10 @@ class Danbooru:
         data = response.json()
         if response.status_code != 200:
             raise ApiError(f'Error code: {response.status_code}\n'
-                           f'Error: {data.get("message", "unknown error")}')
+                           f'Description: {data.get("message", "unknown error")}')
         elif data.get('file_url') is None:
-            raise ApiError('URL not found')
+            raise ApiError('Error: 404\n'
+                           "Description: URL was not found")
         return data
 
     def image(self, tags: str = ''):
@@ -66,7 +67,7 @@ class Format:
         self.templates = {
             'tags': 'Tags: <b>{}</b>',
             'rating': 'Rating: <b>{}</b>',
-            'file_url': 'Image_URL: {}',
+            'file_url': 'Image_url: {}',
             'score': 'Score: <b>{}</b>'
         }
 
