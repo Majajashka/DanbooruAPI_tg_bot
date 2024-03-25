@@ -19,27 +19,35 @@ async def set_tags(message: Message):
 @router.message(F.text.lower().startswith('tags'))
 async def random_image(message: Message):
     msg = message.text.split()
-    if len(message.text.split()) < 2:
+    if len(msg) < 2:
         await message.answer("Please provide both the number of images and tags.")
         return
     msg.remove(msg[0])
     tags = " ".join(msg)
     if tags[0].isdigit():
         post_count = msg[0]
+        if int(post_count) > 100:
+            await message.answer(text="Post count can't be greater than 100")
+            return
         tags = tags[len(post_count) + 1:]
     else:
         post_count = 1
-    print(f'post count: {post_count}\n'
-          f'tags: {tags}')
+    error_count = 0
     for i in range(int(post_count)):
+        if error_count >= 4:  # If there are 5 errors in a row -> abort
+            await message.answer("Too many consecutive errors. Aborting.")
+            return
         try:
             request = danb.image(tags=tags)
             img_url, text = request.file_url, form.format_image(request)
             image = URLInputFile(url=img_url)
             await message.answer_photo(photo=image, caption=text, reply_markup=photo_kb)
+            error_count = 0
         except ApiError as e:
+            error_count += 1
             await message.answer(f'{e}')
         except Exception as e:
+            error_count += 1
             await message.answer(f'Post Number: [{i + 1}]\n'
                                  f'Some error: {e}\n'
                                  f'Image_url: {img_url if img_url else "None"}')
