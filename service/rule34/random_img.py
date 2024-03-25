@@ -22,6 +22,8 @@ def get_random_img(search_tags: list, tags_display: bool = False):
     tags = None
     negative_tags = ['-futa', '-futanari', '-furry', '-gay', '-yaoi', '-femboy', '-huge_breasts', '-big_belly',
                      '-weight_gain', '-cannibalism', '-dead', '-death', '-murder', '-murdered', '-animal', '-male_only',
+                     '-anthro', '-canine', '-canid', '-canis', '-mammal', '-wolf', '-fur', 'pokemon_(species)',
+                     'animal_genitalia', 'animal_penis', 'feral'
                      ]
     rule34 = rule34Py()
     search = rule34.random_post(search_tags+negative_tags)
@@ -29,5 +31,3 @@ def get_random_img(search_tags: list, tags_display: bool = False):
         tags = ', '.join(search.tags)
     formatted_text = text.format(url=search.image, score=search.score, tags=tags)
     return formatted_text, search.image
-
-
