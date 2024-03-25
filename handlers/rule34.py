@@ -17,7 +17,6 @@ async def rule34_img(message: Message):
         digit_len = len(msg[1]) + 1
         first_word = len(msg[0]) + 1
         tags = message.text[first_word + digit_len:].split()
-        print(tags)
         for _ in range(int(msg[1])):
             try:
                 text, img_url = get_random_img(tags)
@@ -27,7 +26,6 @@ async def rule34_img(message: Message):
                 await message.answer(f'some error: {e}')
     else:
         tags = message.text[7:].split()
-        print(tags)
         try:
             text, img_url = get_random_img(tags)
             image = URLInputFile(url=img_url)
@@ -46,7 +44,6 @@ async def rule34_img(message: Message):
         digit_len = len(msg[2]) + 1
         search_word = len(msg[0]) + len(msg[1]) + 2
         tags = message.text[search_word + digit_len:].split()
-        print(tags)
         for _ in range(int(msg[2])):
             try:
                 text, img_url = get_random_img(tags, True)
@@ -60,7 +57,6 @@ async def rule34_img(message: Message):
                 await message.answer(f'some error: {e}')
     else:
         tags = message.text[16:].split()
-        print(tags)
         try:
             text, img_url = get_random_img(tags, True)
             image = URLInputFile(url=img_url)
