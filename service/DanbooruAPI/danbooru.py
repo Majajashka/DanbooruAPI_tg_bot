@@ -42,7 +42,7 @@ class Danbooru:
         return Post.from_json(data)
 
     def tags(self, tag: str) -> str:
-        """Returns tags
+        """Search tags
 
         :param tag: Tag
         :type tag: str
