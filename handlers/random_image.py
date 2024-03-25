@@ -19,31 +19,30 @@ async def set_tags(message: Message):
 @router.message(F.text.lower().startswith('tags'))
 async def random_image(message: Message):
     msg = message.text.split()
+    if len(message.text.split()) < 2:
+        await message.answer("Please provide both the number of images and tags.")
+        return
     msg.remove(msg[0])
     tags = " ".join(msg)
-    if msg[0].isdigit():  # message.text example - tags 10 solo rating:g
-        tags = tags[len(tags[0]) + 1:]
-        for i in range(int(tags[0])):
-            try:
-                request = danb.image(tags=tags)
-                img_url, text = request.file_url, form.format_image(request)
-                image = URLInputFile(url=img_url)
-                await message.answer_photo(photo=image, caption=text, reply_markup=photo_kb)
-            except ApiError as e:
-                await message.answer(e)
-            except Exception as e:
-                await message.answer(f'[{i + 1}] some error: {e}\n'
-                                     f'image_url: {img_url if img_url else None}')
+    if tags[0].isdigit():
+        post_count = msg[0]
+        tags = tags[len(post_count) + 1:]
     else:
+        post_count = 1
+    print(f'post count: {post_count}\n'
+          f'tags: {tags}')
+    for i in range(int(post_count)):
         try:
             request = danb.image(tags=tags)
             img_url, text = request.file_url, form.format_image(request)
             image = URLInputFile(url=img_url)
             await message.answer_photo(photo=image, caption=text, reply_markup=photo_kb)
         except ApiError as e:
-            await message.answer(e)
+            await message.answer(f'{e}')
         except Exception as e:
-            await message.answer(f'some error: {e}')
+            await message.answer(f'Post Number: [{i + 1}]\n'
+                                 f'Some error: {e}\n'
+                                 f'Image_url: {img_url if img_url else "None"}')
 
 
 @router.message(F.text.lower().startswith('search'))
