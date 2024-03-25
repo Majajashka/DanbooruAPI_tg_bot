@@ -29,3 +29,5 @@ def get_random_img(search_tags: list, tags_display: bool = False):
         tags = ', '.join(search.tags)
     formatted_text = text.format(url=search.image, score=search.score, tags=tags)
     return formatted_text, search.image
+
+

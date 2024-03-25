@@ -1,10 +1,8 @@
-import time
-
 import requests
 from requests.auth import HTTPBasicAuth
 
 basic = HTTPBasicAuth('majajashka', 'yTMKffX5AffivLDNDgYrydrv')
-a = requests.get('https://danbooru.donmai.us/profile.json', auth=basic)
+
 
 text_pattern = ('Rating: <b>{rating}</b>\n'
                 'Score: <b>{score}</b>\n'
@@ -12,17 +10,19 @@ text_pattern = ('Rating: <b>{rating}</b>\n'
 
 
 def random_img(tags: str = '') -> tuple:
-    start_time = time.time()
     params = {
         'tags': tags,
     }
-    random1 = requests.get('https://danbooru.donmai.us/posts/random.json', params=params)  # auth=basic,
-    data = random1.json()
+    random = requests.get('https://danbooru.donmai.us/posts/random.json', params=params, auth=basic)
+    data = random.json()
+    if random.status_code != 200:
+        print(random.status_code, tags, data, sep='\n')
+        raise ConnectionError(f'Error_code: {random.status_code}\n'
+                              f'Error: {data["message"]}')
     img_url = data['file_url']
     rating = data['rating']
     score = data['score']
     text = text_pattern.format(rating=rating, score=score, img_url=img_url)
-    print(img_url)
     return text, img_url
 
 
@@ -51,6 +51,8 @@ def regex_similar_tag(tag: str):
     }
     response = requests.get('https://danbooru.donmai.us/tags.json', auth=basic, params=param)
     data = response.json()
+    print(response.status_code)
+    print(data)
     list_data = [tags['name'] for tags in data]
     post_count = [tags['post_count'] for tags in data]
     tags_dict = dict(zip(list_data, post_count))
@@ -58,3 +60,6 @@ def regex_similar_tag(tag: str):
     for key in tags_dict:
         text += f'<code>{key}</code>: {tags_dict.get(key)}\n'
     return text
+
+
+print(regex_similar_tag('diasdasd'))

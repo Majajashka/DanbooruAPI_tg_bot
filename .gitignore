@@ -1,8 +1,8 @@
 .env
 
 
-/test111.py
-/test1111.py
+/test/test111.py
+/service/DanbooruAPI/danbooru.py
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 # Byte-compiled / optimized / DLL files
@@ -188,3 +188,5 @@ fabric.properties
 
 # idea folder, uncomment if you don't need it
 .idea
+
+/test
