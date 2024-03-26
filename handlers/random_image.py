@@ -34,9 +34,6 @@ async def random_image(message: Message):
         post_count = 1
     error_count = 0
     for i in range(int(post_count)):
-        if error_count >= 4:  # If there are 5 errors in a row -> abort
-            await message.answer("Too many consecutive errors. Aborting.")
-            return
         try:
             request = danb.image(tags=tags)
             img_url, text = request.file_url, form.format_image(request)
@@ -44,9 +41,15 @@ async def random_image(message: Message):
             await message.answer_photo(photo=image, caption=text, reply_markup=photo_kb)
             error_count = 0
         except ApiError as e:
+            if error_count >= 4:  # If there are 5 errors in a row -> abort
+                await message.answer("Too many consecutive errors. Aborting.")
+                return
             error_count += 1
             await message.answer(f'{e}')
         except Exception as e:
+            if error_count >= 4:  # If there are 5 errors in a row -> abort
+                await message.answer("Too many consecutive errors. Aborting.")
+                return
             error_count += 1
             await message.answer(f'Post Number: [{i + 1}]\n'
                                  f'Some error: {e}\n'

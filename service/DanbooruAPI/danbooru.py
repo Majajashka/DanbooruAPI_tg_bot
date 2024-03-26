@@ -108,16 +108,18 @@ class Post:
         prating = json['rating']
         file_ext = json['file_ext']
         tags = json['tag_string']
+        md5 = json['md5']
 
-        return Post(pid, pfile_url, pscore, prating, file_ext, tags)
+        return Post(pid, pfile_url, pscore, prating, file_ext, tags, md5)
 
-    def __init__(self, id: int, url: str, score: int, rating: str, file_ext: str, tags: str):
+    def __init__(self, id: int, url: str, score: int, rating: str, file_ext: str, tags: str, md5: str):
         self._id = id
         self._url = url
         self._score = score
         self._rating = rating
         self._file_ext = file_ext
         self._tags = tags
+        self._md5 = md5
 
     @property
     def id(self) -> int:
@@ -142,6 +144,10 @@ class Post:
     @property
     def tags(self) -> str:
         return self._tags
+
+    @property
+    def md5(self):
+        return self._md5
 
 
 if __name__ == '__main__':
