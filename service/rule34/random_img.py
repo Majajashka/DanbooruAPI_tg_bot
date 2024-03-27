@@ -23,10 +23,15 @@ def get_random_img(search_tags: list, tags_display: bool = False):
     negative_tags = ['-futa', '-futanari', '-furry', '-gay', '-yaoi', '-femboy', '-huge_breasts', '-big_belly',
                      '-weight_gain', '-cannibalism', '-dead', '-death', '-murder', '-murdered', '-animal', '-male_only',
                      '-anthro', '-canine', '-canid', '-canis', '-mammal', '-wolf', '-fur', '-pokemon_(species)',
-                     '-animal_genitalia', '-animal_penis', '-feral'
+                     '-animal_genitalia', '-animal_penis', '-feral', '-1futa', '-2futas', '-horse_penis', '-horsecock',
+                     '-futa_on_female', '-futa_on_male', '-balls_bigger_than_body', '-balls_bigger_than_head',
+                     '-balls_bigger_than_torso', '-belly_bigger_than_body', '-belly_bigger_than_building',
+                     '-breasts_bigger_than_head', '-colossal_belly', '-colossal_penis', '-hyper', '-hyper_balls',
+                     '-hyper_belly', '-hyper_breasts', '-hyper_penis', '-impossible_fit', '-penis_bigger_than_body',
+                     '-penis_longer_than_knee', '-cumflation', '-inflation'
                      ]
     rule34 = rule34Py()
-    search = rule34.random_post(search_tags+negative_tags)
+    search = rule34.random_post(search_tags + negative_tags)
     if tags_display:
         tags = ', '.join(search.tags)
     formatted_text = text.format(url=search.image, score=search.score, tags=tags)
