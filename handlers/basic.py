@@ -1,4 +1,5 @@
 import re
+import requests
 
 from aiogram import Router, F
 from aiogram.types import Message
@@ -17,19 +18,32 @@ async def start(message: Message):
 async def get_md5(message: Message):
     caption = message.reply_to_message.caption
     if not caption:
-        await message.answer('Отвечай на сообщение...')
+        caption = message.reply_to_message.text
+        if not caption:
+            await message.answer('Отвечай на сообщение...')
+            return
     link = re.search("(?P<url>https?://\S+)", caption).group("url")
     md5 = link[link.rfind('/') + 1: link.rfind('.')]
-    await message.answer(text=md5)
+    response = requests.get(url=f'https://danbooru.donmai.us/posts.json?md5={md5}')
+    data = response.json()['media_asset']['variants']
+    url_dict = {variants['type']: variants['url'] for variants in data}
+    text = ''
+    for resolution, url in url_dict.items():
+        text += (f'<b>{resolution}</b>: '
+                 f'{url}\n')
+    await message.answer(text=text, disable_web_page_preview=True)
 
 
 @router.message(F.text.lower() == 'json')
 async def get_md5(message: Message):
     caption = message.reply_to_message.caption
     if not caption:
-        await message.answer('Отвечай на сообщение...')
+        caption = message.reply_to_message.text
+        if not caption:
+            await message.answer('Отвечай на сообщение...')
+            return
     link = re.search("(?P<url>https?://\S+)", caption).group("url")
     md5 = link[link.rfind('/') + 1: link.rfind('.')]
     json_link = f'https://danbooru.donmai.us/posts.json?md5={md5}'
-    await message.answer(text='json:\n'
+    await message.answer(text='json:'
                               f'{json_link}')
