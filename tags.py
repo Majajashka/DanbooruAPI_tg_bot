@@ -1,4 +1,4 @@
-tags = ''
+text = 'balls_bigger_than_body, balls_bigger_than_head, balls_bigger_than_torso, belly_bigger_than_body, belly_bigger_than_building, breasts_bigger_than_head, colossal_belly, colossal_penis hyper, hyper_balls, hyper_belly, hyper_breasts, hyper_penis, impossible_fit, penis_bigger_than_body, penis_longer_than_knee'
 
 
 def format_tags(tags: str):
@@ -11,4 +11,4 @@ def format_tags(tags: str):
     return formatted_tags
 
 
-print(format_tags(tags))
+print(format_tags(text))
